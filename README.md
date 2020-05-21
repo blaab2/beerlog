@@ -1,3 +1,35 @@
+# The BEERLOG Application
+
+The Beerlog application provides a nice and clean web interface to manage beer consumption in your social environment or organization. The main features are
+- Ranking list of beer consumers
+- Personal beer statistics
+- Beer financial administration
+
+The app is built with the laravel 7.x framework using bootstrap. Developed in Germany to support beer lovers all over the world :heart: :heart_eyes: :beer:  
+
+## Install this Application
+
+This section gives you a brief overview of how to run the application.
+
+### Dependencies & Prerequirements
+We need nodejs to compile the application:
+nodejs - https://nodejs.org/en/download/
+
+We need composer to manage the dependancies:
+composer - https://getcomposer.org/download/
+
+### Webserver
+We need a webserver with php and mysql. Check also the laravel requirements https://laravel.com/docs/7.x/installation
+However the current XAMPP package fullfills the requirements. https://www.apachefriends.org/de/index.html
+
+### Install and Serve the application
+1. setup DB settings and configuration settings in .env file
+2. install composer dependencies ```install composer -v```
+3. create the DB tables: ```php artisan migrate``` 
+4. compile the css and js assets ```npm run prod```
+5. Serve the application via your webserver vhost config pointing to beerlog/public OR use ```php artisan serve``` command
+
+
 <p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
 
 <p align="center">
