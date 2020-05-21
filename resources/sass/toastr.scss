@@ -1,0 +1,8 @@
+// Variables
+@import 'variables';
+
+@import '~toastr/toastr';
+
+.toast-success {
+  background-color: $success;
+}
