@@ -23,6 +23,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        
+		\Collective\Html\FormFacade::macro('rawSubmitBtn', function($value = null, $options = array())
+		{
+			
+			$submit = \Collective\Html\FormFacade::button('%s', array_merge ($options,['type' => 'submit'] ));
+
+			return sprintf($submit, $value);
+		});
     }
 }

@@ -25,8 +25,8 @@ class HomeController extends Controller
     public function index()
     {
 
-		$users1 = \App\User::select('id','nickname')->withCount('beers')->having('beers_count','>=',Auth::user()->beers()->count())->take(2)->orderBy('beers_count')->get();
-		$users2 = \App\User::select('id','nickname')->withCount('beers')->having('beers_count','<',Auth::user()->beers()->count())->take(2)->orderBy('beers_count')->get();
+		$users1 = \App\User::select('id','nickname')->withCount('beers')->having('beers_count','>=',Auth::user()->beers()->count())->take(2)->orderBy('beers_count','asc')->get();
+		$users2 = \App\User::select('id','nickname')->withCount('beers')->having('beers_count','<',Auth::user()->beers()->count())->take(2)->orderBy('beers_count','desc')->get();
 
 		$data['items'] = $users1->merge($users2);		
 	
