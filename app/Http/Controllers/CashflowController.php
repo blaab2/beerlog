@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Cashflow;
 use App\Beer;
 use App\User;
 use App\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class BeerController extends Controller
+class CashflowController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -25,21 +26,11 @@ class BeerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(User $user)
+    public function create()
     {
-        
+       //
     }
 
-	 /**
-     * Add a beer to this resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function addBeer(Request $request)
-    {
-		return $this->store(Auth::user(),$request);
-    }
-	
     /**
      * Store a newly created resource in storage.
      *
@@ -48,42 +39,33 @@ class BeerController extends Controller
      */
     public function store(User $user, Request $request)
     {
-		$count = 1;
-		if (!is_null($request->count))
-		{
-			$count = intval($request->count);
-		}
-		
-		$beer_price = Setting::where('key','beer_price')->get('value')->pluck('value')[0];
-		
-		//dd($beer_price);
-		
-		for ($i = 1; $i <= $count; $i++) {
-			$user->beers()->create([
-					'cost' => $beer_price,
+		if ($this->authorize('create', Cashflow::class)) {
+			
+			
+			 $validatedData = $request->validate([
+				'amount' => 'required|numeric',
+				'description' => 'required|string|max:255',
+			]);
+			
+			$user->cashflows()->create([
+					'amount' => $request->amount,
+					'description' => $request->description,
 					'reported_by' => Auth::user()->id
 				]);
+					
+				return redirect()->back()->with(['flash_message'=>'Added a cashflow with '. $request->amount . '€ to '.$user->nickname ]);
 		}
 		
-		$msg = 'Added '. $count . ' beer to '.$user->nickname;
 		
-		if($request->ajax()){
-                return response()->json([
-					'status' => $msg,
-					'state' => '1'
-				]);
-		}
-			
-        return redirect()->back()->with(['flash_message'=>'Added '. $count . ' beer to '.$user->nickname ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Beer  $beer
+     * @param  \App\cashflow  $cashflow
      * @return \Illuminate\Http\Response
      */
-    public function show(Beer $beer)
+    public function show(cashflow $cashflow)
     {
         //
     }
@@ -91,10 +73,10 @@ class BeerController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Beer  $beer
+     * @param  \App\cashflow  $cashflow
      * @return \Illuminate\Http\Response
      */
-    public function edit(Beer $beer)
+    public function edit(cashflow $cashflow)
     {
         //
     }
@@ -103,10 +85,10 @@ class BeerController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Beer  $beer
+     * @param  \App\cashflow  $cashflow
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Beer $beer)
+    public function update(Request $request, cashflow $cashflow)
     {
         //
     }
@@ -114,10 +96,10 @@ class BeerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Beer  $beer
+     * @param  \App\cashflow  $cashflow
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Beer $beer)
+    public function destroy(cashflow $cashflow)
     {
         //
     }

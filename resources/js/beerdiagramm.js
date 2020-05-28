@@ -36,7 +36,6 @@ var borderColors = inputdata.map(function(x) {
 console.log(colors);
 
 			*/
-			console.log(borderColors);
 			
 var myChart = new Chart(ctx, {
 	plugins: [ChartDataLabels],
@@ -66,7 +65,7 @@ var myChart = new Chart(ctx, {
 			}]
 		},
 		legend: {
-            display: true,
+            display: false,
             labels: {
                 fontColor: '#fff'
             }

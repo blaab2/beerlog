@@ -39,8 +39,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 	
-	 public function beers()
+	public function beers()
     {
         return $this->hasMany('App\Beer');
+    }
+	
+	public function cashflows()
+    {
+        return $this->hasMany('App\Cashflow');
     }
 }

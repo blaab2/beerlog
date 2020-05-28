@@ -22,8 +22,14 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => ['auth']], function () {
-	Route::get('/users', 'UserController@index')->name('users.index');
+	
+	Route::resource('users', 'UserController');
+	Route::post('users/{user}/swapAdminStatus','UserController@swapAdminStatus')->name('users.swapadmin');
+	
 	Route::post('/addbeer', 'BeerController@addBeer')->name('addbeer');
+	Route::resource('users.beers', 'BeerController')->shallow();
 
-	Route::resource('user.beers', 'BeerController')->shallow();
+	Route::resource('users.cashflow','CashflowController')->shallow();
+	
+	Route::resource('settings', 'SettingController');
 });

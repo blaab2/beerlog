@@ -4,4 +4,4 @@ Chart = require('chart.js');
 ChartDataLabels = require('chartjs-plugin-datalabels');
 
 
-const Swal = require('sweetalert2');
+Swal = require('sweetalert2');

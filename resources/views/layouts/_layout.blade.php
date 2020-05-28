@@ -11,6 +11,7 @@
 
     <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}"></script>
+	<script src="{{ mix('js/tools.js') }}"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -38,8 +39,12 @@
                      <ul class="navbar-nav mr-auto">
 					 @auth
     					<li class="nav-item">
-							<a class="nav-link" href="{{ route('users.index') }}">{{ __('Benutzer') }}</a>
+							<a class="nav-link" href="{{ route('users.index') }}">{{ __('List') }}</a>
 						</li>
+						@can('show details')<li class="nav-item">
+							<a class="nav-link" href="{{ route('settings.index') }}">{{ __('Settings') }}</a>
+						</li>
+						@endcan
 					@endauth
 	                </ul>
 
@@ -58,7 +63,7 @@
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                    {{ Auth::user()->nickname }} <span class="caret"></span>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
@@ -85,5 +90,10 @@
 	@if(session()->has('flash_message'))
 		<script>toastr["success"]('{{session()->get('flash_message')}}');</script> 
 	@endif
+	@if(session()->has('flash_error'))
+		<script>toastr["error"]('{{session()->get('flash_error')}}');</script> 
+	@endif
+	
+	
 </body>
 </html>

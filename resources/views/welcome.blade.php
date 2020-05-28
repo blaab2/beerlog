@@ -3,7 +3,7 @@
 @section('content')
 <div class="content flex-center text-center">
                 <div class="title mb-5">
-                    <a href="{{ route('login') }}">Beeerliste</a>
+                    <a href="{{ route('login') }}">Beerliste</a>
 					
 					
                 </div>   

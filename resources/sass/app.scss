@@ -4,10 +4,18 @@
 // Variables
 @import 'variables';
 
+//Sweetalert
+$swal2-content-color: $white;
+$swal2-title-color: $white;
+$swal2-confirm-button-background-color: $primary;
+$swal2-background: $gray-800 !default;
+@import '~sweetalert2/src/sweetalert2';
+
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
 @import 'bootswatch';
+
 
 
 // Font Awesome
