@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -26,8 +27,15 @@ class HomeController extends Controller
     public function index()
     {
 
-		$users1 = \App\User::select('id','nickname')->withCount('beers')->having('beers_count','>=',Auth::user()->beers()->count())->take(2)->orderBy('beers_count','asc')->get();
-		$users2 = \App\User::select('id','nickname')->withCount('beers')->having('beers_count','<',Auth::user()->beers()->count())->take(2)->orderBy('beers_count','desc')->get();
+		$user_count = \App\User::where('id','=',Auth::user()->id)
+			->withCount(['beers AS beers_count' => function ($query) {$query->whereDate('created_at', '>', Carbon::now()->subDays(30));}])
+			->first()->beers_count;
+			
+		$users1 = \App\User::select('id','nickname')
+		->withCount(['beers AS beers_count' => function ($query) {$query->whereDate('created_at', '>', Carbon::now()->subDays(30));}])
+		->having('beers_count','>=',$user_count)->orderBy('beers_count','asc')->take(3)->get();
+		$users2 = \App\User::select('id','nickname')->withCount(['beers AS beers_count' => function ($query) {$query->whereDate('created_at', '>', Carbon::now()->subDays(30));}])
+		->having('beers_count','<',$user_count)->orderBy('beers_count','desc')->take(2)->get();
 
 		
 		

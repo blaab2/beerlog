@@ -44,8 +44,11 @@
 						@can('show details')<li class="nav-item">
 							<a class="nav-link" href="{{ route('settings.index') }}">{{ __('Settings') }}</a>
 						</li>
-						@endcan
+						@endcan		
 					@endauth
+						<li class="nav-item">
+							<a class="nav-link" href="/impressum">{{ __('Datenschutz') }}</a>
+						</li>
 	                </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -83,6 +86,7 @@
                 </div>
             </div>
         </nav>
+		@include('cookieConsent::index')
 		 @yield('body_content')
     </div>
 	 @yield('welcome_content')
@@ -93,6 +97,9 @@
 	@if(session()->has('flash_error'))
 		<script>toastr["error"]('{{session()->get('flash_error')}}');</script> 
 	@endif
+	
+
+	
 	
 	
 </body>

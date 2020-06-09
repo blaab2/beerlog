@@ -210,7 +210,7 @@ $web-font-path: "https://fonts.googleapis.com/css?family=Nunito:200,600" !defaul
 	color: #636b6f;
     padding: 0 25px;
 	margin-top: 10px;
-    font-size: 13px;
+    font-size: $dropdown-font-size;
     font-weight: 400;
     letter-spacing: .1rem;
     text-decoration: none;

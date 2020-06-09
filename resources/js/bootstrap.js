@@ -6,39 +6,44 @@ window._ = require('lodash');
  * code may be modified to fit the specific needs of your application.
  */
 // toastr for sweet notifications
-  window.toastr = require('toastr');
-    toastr.options = {
-        "closeButton": false,
-        "debug": false,
-        "newestOnTop": false,
-        "progressBar": true,
-        "positionClass": "toast-top-right",
-        "preventDuplicates": false,
-        "onclick": null,
-        "showDuration": "300",
-        "hideDuration": "1000",
-        "timeOut": "5000",
-        "extendedTimeOut": "1000",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-      };
+window.toastr = require('toastr');
+toastr.options = {
+	"closeButton": false,
+	"debug": false,
+	"newestOnTop": false,
+	"progressBar": true,
+	"positionClass": "toast-top-right",
+	"preventDuplicates": false,
+	"onclick": null,
+	"showDuration": "300",
+	"hideDuration": "1000",
+	"timeOut": "5000",
+	"extendedTimeOut": "1000",
+	"showEasing": "swing",
+	"hideEasing": "linear",
+	"showMethod": "fadeIn",
+	"hideMethod": "fadeOut"
+  };
+  
+window.Popper = require('popper.js').default;
+window.$ = window.jQuery = require('jquery');
+
+require('bootstrap');
+
+// import datatabes for bootsrap4
+import dt from 'datatables.net-bs4'
+$.fn.DataTable = dt
  
 try {
-    window.Popper = require('popper.js').default;
-    window.$ = window.jQuery = require('jquery');
+    
 	
 	$.ajaxSetup({
 		headers: {
 			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 		}
-	});
-
+	});  
 	
    
-	
-    require('bootstrap');
 } catch (e) {}
 
 /**

@@ -43,6 +43,14 @@
  * Date: 2020-05-04T22:49Z
  */
 
+/*! DataTables 1.10.21
+ * ©2008-2020 SpryMedia Ltd - datatables.net/license
+ */
+
+/*! DataTables Bootstrap 4 integration
+ * ©2011-2017 SpryMedia Ltd - datatables.net/license
+ */
+
 /**
  * @license
  * Lodash <https://lodash.com/>

@@ -13,15 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', function () {return view('welcome');});
 
-Auth::routes();
+Route::get('/impressum', function () {return view('dsgvo');});
 
-Route::get('/home', 'HomeController@index')->name('home');
 
-Route::group(['middleware' => ['auth']], function () {
+Auth::routes(['verify' => true]);
+
+
+
+Route::group(['middleware' => ['verified']], function () {
+	
+	Route::get('/home', 'HomeController@index')->name('home');
 	
 	Route::resource('users', 'UserController');
 	Route::post('users/{user}/swapAdminStatus','UserController@swapAdminStatus')->name('users.swapadmin');

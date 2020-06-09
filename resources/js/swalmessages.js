@@ -1,8 +1,15 @@
-function swalbeerdialog(ajaxurl)
+function swalbeerdialog(formurl,amount)
 {		
+
+	CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
 	Swal.fire({
 	  title: 'Are you sure?',
-	  text: "You won't be able to revert this!",
+	   html:
+    'Do you really want to buy ' + amount + ' beers? You can not undo this.'+ 
+	'<form id="createform" method="POST" action="' + formurl + '" accept-charset="UTF-8"><input name="_token" type="hidden" value="' + CSRF_TOKEN +'">' +
+	'<input name="count" type="hidden" value="' + amount +'">'+ 
+	'</form>',
 	  icon: 'question',
 	  showCancelButton: true,
 	  confirmButtonText: 'Yes, I need it!',
@@ -13,23 +20,12 @@ function swalbeerdialog(ajaxurl)
 		  `
 	}).then((result) => {
 	  if (result.value) {
-		  var ajaxData = {};
-          ajaxData['count'] = 20;
-		   $.ajax({
-		  url: ajaxurl,
-		  data: ajaxData,
-		  type: 'Post',
-		  dataType: 'json',
-		  success: function (xhr, ajaxOptions, thrownError) {
-				toastr.success(xhr.status, '');
-				},
-		  error: function (xhr, ajaxOptions, thrownError) {
-				toastr.error('Status '+xhr.status+thrownError, 'Error');
-				}
-			});
-		
+		   $( "#createform" ).submit();
 	  }
 	});
+	
+						
+					
 }
 
 function swaladminswapdialog(ajaxurl,sender)

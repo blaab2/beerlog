@@ -17,6 +17,9 @@ $swal2-background: $gray-800 !default;
 @import 'bootswatch';
 
 
+// Datatables
+@import "~datatables.net-bs4/css/dataTables.bootstrap4.css";
+
 
 // Font Awesome
 @import '~@fortawesome/fontawesome-free/scss/fontawesome';

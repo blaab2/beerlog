@@ -65,14 +65,17 @@ class UserController extends Controller
      */
     public function show(\App\User $user)
     {
+		$user_count = \App\User::where('id','=',$user->id)
+			->withCount(['beers AS beers_count' => function ($query) {$query->whereDate('created_at', '>', Carbon::now()->subDays(30));}])
+			->first()->beers_count;
+	
         $users1 = \App\User::select('id','nickname')
-			->withCount(['beers AS beers_count' => function ($query) {$query->select(DB::raw("sum(cost) as cost_sum"));}])
-			->having('beers_count','>=',$user->beers()->count())->take(2)->orderBy('beers_count','asc')->get();
-			
-		$users2 = \App\User::select('id','nickname')
-			->withCount(['beers AS beers_count' => function ($query) {$query->select(DB::raw("sum(cost) as cost_sum"));}])
-			->having('beers_count','<',$user->beers()->count())->take(2)->orderBy('beers_count','desc')->get();
-
+		->withCount(['beers AS beers_count' => function ($query) {$query->whereDate('created_at', '>', Carbon::now()->subDays(30));}])
+		->having('beers_count','>=',$user_count)->orderBy('beers_count','asc')->take(3)->get();
+		$users2 = \App\User::select('id','nickname')->withCount(['beers AS beers_count' => function ($query) {$query->whereDate('created_at', '>', Carbon::now()->subDays(30));}])
+		->having('beers_count','<',$user_count)->orderBy('beers_count','desc')->take(2)->get();
+		
+		
 		$data['users'] = $users1->merge($users2);		
 		$data['beers'] = $user->beers()->with('reporter')->take(10)->orderBy('created_at','desc')->get(); 
 		$data['user'] = $user;

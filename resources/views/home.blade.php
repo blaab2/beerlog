@@ -28,7 +28,7 @@
 					</div>
 					<div class="col-sm-4 py-1">
 					
-					<a class="btn btn-lg btn-info w-100" onclick="swalbeerdialog('{{route('addbeer')}}'); return false;" href="#">Crate please!!! 20x<i class="fas fa-beer"></i></a>
+					<a class="btn btn-lg btn-info w-100" onclick="swalbeerdialog('{{route('addbeer')}}',20); return false;" href="#">Crate please!!! 20x<i class="fas fa-beer"></i></a>
 					
 					</div>
 					</div>

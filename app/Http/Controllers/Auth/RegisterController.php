@@ -49,12 +49,16 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+		$messages = [
+			'email.regex' => 'Please provide a valid isys e-mail address!',
+		];
+		
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-			'nickname' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users','regex:(.*\isys.uni-stuttgart.de$)'],
+			'nickname' => ['required', 'string', 'min:6', 'max:255','unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+        ],$messages);
     }
 
     /**

@@ -1,7 +1,7 @@
 {
-    "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css",
-    "/css/toastr.css": "/css/toastr.css",
-    "/js/beerdiagramm.js": "/js/beerdiagramm.js",
-    "/js/tools.js": "/js/tools.js"
+    "/js/app.js": "/js/app.js?id=84d955b632c9d4c13b90",
+    "/css/app.css": "/css/app.css?id=a8fea463a85ad71c276a",
+    "/css/toastr.css": "/css/toastr.css?id=d369060d6710fece663d",
+    "/js/beerdiagramm.js": "/js/beerdiagramm.js?id=bdc21ef12039233e966b",
+    "/js/tools.js": "/js/tools.js?id=4e1c0305427fa36a832f"
 }

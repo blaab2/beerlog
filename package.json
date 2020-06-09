@@ -26,6 +26,9 @@
         "@fortawesome/fontawesome-free": "^5.13.0",
         "chart.js": "^2.9.3",
         "chartjs-plugin-datalabels": "^0.7.0",
+        "datatables.net": "^1.10.21",
+        "datatables.net-bs4": "^1.10.21",
+        "datatables.net-dt": "^1.10.21",
         "sweetalert2": "^9.13.1",
         "toastr": "^2.1.4"
     }
