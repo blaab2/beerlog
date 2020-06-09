@@ -38,7 +38,7 @@
                                 @enderror
                             </div>
                         </div>
-						
+
                         <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
@@ -72,6 +72,22 @@
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="dsgvo" class="col-md-4 col-form-label text-md-right"></label>
+                            <div class="col-md-4">
+                                I accept the DSGVO policy which can be found <a href="{{ route('impressum') }}">here</a>
+                            </div>
+                            <div class="col-md-2">
+                                <input id="dsgvo" type="checkbox" class="form-control @error('dsgvo') is-invalid @enderror" name="dsgvo" required>
+
+                                @error('dsgvo')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
                         </div>
 
