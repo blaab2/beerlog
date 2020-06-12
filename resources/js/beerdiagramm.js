@@ -60,7 +60,8 @@ var myChart = new Chart(ctx, {
             yAxes: [{
                 ticks: {
                     beginAtZero: true,
-                    fontColor: '#fff'
+                    fontColor: '#fff',
+                    stepSize: 1,
                 }
             }],
             xAxes: [{
