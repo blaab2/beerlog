@@ -27,22 +27,43 @@ class HomeController extends Controller
     public function index()
     {
 
-		$user_count = \App\User::where('id','=',Auth::user()->id)
-			->withCount(['beers AS beers_count' => function ($query) {$query->whereDate('created_at', '>', Carbon::now()->subDays(30));}])
-			->first()->beers_count;
-			
-		$users1 = \App\User::select('id','nickname')
-		->withCount(['beers AS beers_count' => function ($query) {$query->whereDate('created_at', '>', Carbon::now()->subDays(30));}])
-		->having('beers_count','>=',$user_count)->orderBy('beers_count','asc')->take(3)->get();
-		$users2 = \App\User::select('id','nickname')->withCount(['beers AS beers_count' => function ($query) {$query->whereDate('created_at', '>', Carbon::now()->subDays(30));}])
-		->having('beers_count','<',$user_count)->orderBy('beers_count','desc')->take(2)->get();
+        $user = \App\User::where('id', '=', Auth::user()->id)
+            ->withCount(['beers AS beers_count' => function ($query) {
+                $query->whereDate('created_at', '>', Carbon::now()->subDays(30));
+            }])
+            ->first();
+        $user_count = $user->beers_count;
 
-		
-		
-		$data['users'] = $users1->merge($users2);		
-		$data['beers'] = Auth::user()->beers()->with('reporter')->take(10)->orderBy('created_at','desc')->get(); 
-		$data['user'] = Auth::user()->withCount(['cashflows AS cashflow' => function ($query) {$query->select(DB::raw("sum(amount) as amount_sum"));}]);
-		$data['cashflows'] = Auth::user()->cashflows()->take(10)->orderBy('created_at','desc')->get();
-        return view('home',$data);
+        $users1 = \App\User::select('id', 'nickname')
+            ->where('id', '!=', $user->id)
+            ->withCount(['beers AS beers_count' => function ($query) {
+                $query->whereDate('created_at', '>', Carbon::now()->subDays(30));
+            }])
+            ->having('beers_count', '>=', $user_count)->orderBy('beers_count', 'asc')->take(5)->get();
+        $users2 = \App\User::select('id', 'nickname')->withCount(['beers AS beers_count' => function ($query) {
+            $query->whereDate('created_at', '>', Carbon::now()->subDays(30));
+        }])
+            ->having('beers_count', '<', $user_count)->orderBy('beers_count', 'desc')->take(5)->get();
+
+        $show_count = 5;
+        $total_count = $users1->count() + $users2->count();
+        $diff_count = $total_count - $show_count;
+
+
+        for ($i = 0; $i < $diff_count; $i++) {
+            if ($users1->count() > $users2->count()) {
+                $users1->pop();
+            } else {
+                $users2->pop();
+            }
+        }
+
+        $data['users'] = $users1->push($user)->merge($users2);
+        $data['beers'] = Auth::user()->beers()->with('reporter')->take(10)->orderBy('created_at', 'desc')->get();
+        $data['user'] = Auth::user()->withCount(['cashflows AS cashflow' => function ($query) {
+            $query->select(DB::raw("sum(amount) as amount_sum"));
+        }]);
+        $data['cashflows'] = Auth::user()->cashflows()->take(10)->orderBy('created_at', 'desc')->get();
+        return view('home', $data);
     }
 }
