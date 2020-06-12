@@ -17,7 +17,10 @@ class BeerController extends Controller
      */
     public function index()
     {
-        //
+        if ($this->authorize('viewAny', Beer::class)) {
+            $data['beers'] = Beer::all();
+            return view('beer.index', $data);
+        }
     }
 
     /**
@@ -27,7 +30,7 @@ class BeerController extends Controller
      */
     public function create(User $user)
     {
-        
+
     }
 
 	 /**
@@ -39,7 +42,7 @@ class BeerController extends Controller
     {
 		return $this->store(Auth::user(),$request);
     }
-	
+
     /**
      * Store a newly created resource in storage.
      *
@@ -48,33 +51,32 @@ class BeerController extends Controller
      */
     public function store(User $user, Request $request)
     {
-		$count = 1;
-		if (!is_null($request->count))
-		{
-			$count = intval($request->count);
-		}
-		
-		$beer_price = Setting::where('key','beer_price')->get('value')->pluck('value')[0];
-		
-		//dd($beer_price);
-		
-		for ($i = 1; $i <= $count; $i++) {
-			$user->beers()->create([
-					'cost' => $beer_price,
-					'reported_by' => Auth::user()->id
-				]);
-		}
-		
-		$msg = 'Added '. $count . ' beer to '.$user->nickname;
-		
-		if($request->ajax()){
-                return response()->json([
-					'status' => $msg,
-					'state' => '1'
-				]);
-		}
-			
-        return redirect()->back()->with(['flash_message'=>'Added '. $count . ' beer to '.$user->nickname ]);
+        $count = 1;
+        if (!is_null($request->count)) {
+            $count = intval($request->count);
+        }
+
+        $beer_price = Setting::getValue('beer_price');
+
+        //dd($beer_price);
+
+        for ($i = 1; $i <= $count; $i++) {
+            $user->beers()->create([
+                'cost' => $beer_price,
+                'reported_by' => Auth::user()->id
+            ]);
+        }
+
+        $msg = 'Added ' . $count . ' beer to ' . $user->nickname;
+
+        if ($request->ajax()) {
+            return response()->json([
+                'status' => $msg,
+                'state' => '1'
+            ]);
+        }
+
+        return redirect()->back()->with(['flash_message' => 'Added ' . $count . ' beer to ' . $user->nickname]);
     }
 
     /**
@@ -119,6 +121,9 @@ class BeerController extends Controller
      */
     public function destroy(Beer $beer)
     {
-        //
+        if ($this->authorize('delete', $beer)) {
+            $beer->delete();
+            return redirect()->back()->with(['flash_message' => 'Beer deleted']);
+        }
     }
 }

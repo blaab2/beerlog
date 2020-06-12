@@ -18,7 +18,7 @@ class BeerPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return $user->can('show details');
     }
 
     /**
@@ -65,7 +65,7 @@ class BeerPolicy
      */
     public function delete(User $user, Beer $beer)
     {
-        //
+        return $user->can('show details');
     }
 
     /**

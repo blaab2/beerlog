@@ -1,3 +1,27 @@
+function swalbeerdeletedialog(formurl) {
+
+    CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+    Swal.fire({
+        title: 'Delete item',
+        html:
+            'Do you really want to delete this beer?' +
+            '<form id="createform" method="POST" action="' + formurl + '" accept-charset="UTF-8"><input name="_token" type="hidden" value="' + CSRF_TOKEN + '">' +
+            '<input name="_method" type="hidden" value="DELETE">' +
+            '</form>',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Yes!',
+        backdrop: `
+			url("/img/nyan-cat.gif")
+			left top
+			no-repeat		  `
+    }).then((result) => {
+        if (result.value) {
+            $("#createform").submit();
+        }
+    });
+}
+
 function swalbeerdialog(formurl, amount) {
     if (amount <= 1)
         beerlang = 'beer';

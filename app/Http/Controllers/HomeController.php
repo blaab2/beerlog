@@ -58,6 +58,7 @@ class HomeController extends Controller
             }
         }
 
+        $data['beer_price'] = \App\Setting::getValue('beer_price');
         $data['users'] = $users1->push($user)->merge($users2);
         $data['beers'] = Auth::user()->beers()->with('reporter')->take(10)->orderBy('created_at', 'desc')->get();
         $data['user'] = Auth::user()->withCount(['cashflows AS cashflow' => function ($query) {
