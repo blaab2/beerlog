@@ -37,10 +37,36 @@
                                 is {{number_format($beer_price,2)}}€ at the
                                 moment.
                             </div>
+                            <hr/>
+                            <div class="row justify-content-center">
+
+                            </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-12">
+        </div>
+        <div class="row justify-content-center d-flex align-items-stretch">
+            <div class="col-lg-3">
+                <div class="card h-100">
+                    <div class="card-header">Stats</div>
+                    <div class="card-body"><p>
+                            nickname: {{$user->nickname}}</p>
+                        <p>
+                            total beer count: {{$user->total_beers_count}}<br>
+                            recent beer count: {{$user->beers_count}}</p>
+                        <p>
+                            payed: {{$user->cashflow}}€<br>
+                            depts: {{$user->depts}}€<br>
+                            total: <span @if($user->cashflow-$user->depts<0)class="text-warning"@endif>
+                            {{$user->cashflow-$user->depts}}€</span></p>
+                        <p>
+                            Last beer registered:<br>{{$beers->first()->created_at}}
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-9">
                 <div class="card">
                     <div class="card-header">Recent Beer Ranking</div>
                     <input type="hidden" id="data1" value="{{$users->toJson()}}"/>

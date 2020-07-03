@@ -256,3 +256,10 @@ $web-font-path: "https://fonts.googleapis.com/css?family=Nunito:200,600" !defaul
 .footer-margin {
     height: 100px;
 }
+
+hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
