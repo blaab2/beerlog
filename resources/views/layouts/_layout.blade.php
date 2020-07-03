@@ -43,6 +43,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('users.index') }}">{{ __('List') }}</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('home') }}">{{ __('Dashboard') }}</a>
+                        </li>
                         @can('show details')
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('settings.index') }}">{{ __('Settings') }}</a>

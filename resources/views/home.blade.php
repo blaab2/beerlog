@@ -42,7 +42,7 @@
             </div>
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Beer Ranking</div>
+                    <div class="card-header">Recent Beer Ranking</div>
                     <input type="hidden" id="data1" value="{{$users->toJson()}}"/>
                     <input type="hidden" id="data2" value="{{Auth::user()->id}}"/>
                     <div class="card-body">
