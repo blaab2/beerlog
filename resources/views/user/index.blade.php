@@ -95,10 +95,15 @@
                                                 "targets": [3],
                                                 "visible": false
                                             }
+                                        ],
+                                        dom: 'frtipB',
+                                        buttons: [
+                                            'csv', 'excel'
                                         ]
                                     });
                                 });
                             </script>
+                            <p><br></p>
                         </div>
                     </div>
 

@@ -18,32 +18,41 @@ toastr.options = {
 	"showDuration": "300",
 	"hideDuration": "1000",
 	"timeOut": "5000",
-	"extendedTimeOut": "1000",
-	"showEasing": "swing",
-	"hideEasing": "linear",
-	"showMethod": "fadeIn",
-	"hideMethod": "fadeOut"
-  };
-  
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+};
+
 window.Popper = require('popper.js').default;
 window.$ = window.jQuery = require('jquery');
 
+//var dt = require( 'datatables.net-bs4' )( window, window.$ );
+
+const JSZip = require('jszip');
+window.JSZip = JSZip; // required to make Buttons extension work for Excel button
+
+
+require('datatables.net');
+require('datatables.net-bs4');
+require('datatables.net-buttons');
+require('datatables.net-buttons-bs4');
+require('datatables.net-buttons/js/buttons.html5');
+
 require('bootstrap');
 
-// import datatabes for bootsrap4
-import dt from 'datatables.net-bs4'
-$.fn.DataTable = dt
- 
+
 try {
-    
-	
-	$.ajaxSetup({
-		headers: {
-			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-		}
-	});  
-	
-   
+
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+
 } catch (e) {}
 
 /**
