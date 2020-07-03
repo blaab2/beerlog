@@ -24,6 +24,7 @@
                     </div>
                 </div>
             </div>
+            @can('show details')
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">Local Beer History</div>
@@ -80,6 +81,7 @@
                     </div>
                 </div>
             </div>
+            @endcan
         </div>
     </div>
 @endsection
