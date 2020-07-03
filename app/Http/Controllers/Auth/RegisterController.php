@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use App\Setting;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
@@ -44,28 +45,36 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
     {
-		$messages = [
-			'email.regex' => 'Please provide a valid isys e-mail address!',
-		];
+        $messages = [
+            'email.regex' => 'Please provide a valid isys e-mail address!',
+        ];
 
-        return Validator::make($data, [
+        $mailcheck = Setting::getValue('mailcheck');
+
+        $rules = [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users','regex:(.*\isys.uni-stuttgart.de$)'],
-			'nickname' => ['required', 'string', 'min:6', 'max:255','unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'nickname' => ['required', 'string', 'min:6', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'dsgvo' => ['required', 'in:on'],
-        ],$messages);
+            'dsgvo' => ['required', 'in:on']
+        ];
+
+        if ($mailcheck) {
+            array_push($rules['email'], env('APP_MAILCHECK', false));
+        }
+
+        return Validator::make($data, $rules, $messages);
     }
 
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param array $data
      * @return \App\User
      */
     protected function create(array $data)
@@ -73,7 +82,7 @@ class RegisterController extends Controller
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-			'nickname' => $data['nickname'],
+            'nickname' => $data['nickname'],
             'password' => Hash::make($data['password']),
         ]);
     }

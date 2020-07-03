@@ -15,13 +15,17 @@ class CreateSettingsTable extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-			$table->string('key');
-			$table->string('value');
+            $table->string('key');
+            $table->string('value');
             $table->timestamps();
         });
-		
-		 DB::table('settings')->insert([
+
+        DB::table('settings')->insert([
             'key' => 'beer_price',
+            'value' => 1
+        ]);
+        DB::table('settings')->insert([
+            'key' => 'mailcheck',
             'value' => 1
         ]);
     }

@@ -33,9 +33,10 @@
                                     20x<i class="fas fa-beer"></i></a>
                             </div>
                         </div>
-                        <div class="row justify-content-center">The price for one beer is {{$beer_price}}€ at the
-                            moment.
-                        </div>
+                            <div class="row justify-content-center">The price for one beer
+                                is {{number_format($beer_price,2)}}€ at the
+                                moment.
+                            </div>
                     </div>
                 </div>
             </div>
