@@ -22,11 +22,11 @@ function swalbeerdeletedialog(formurl) {
     });
 }
 
-function swalbeerdialog(formurl, amount) {
+function swalbeerdialog(formurl, amount, beer_type_id, label) {
     if (amount <= 1)
-        beerlang = 'beer';
+        beerlang = label;
     else
-        beerlang = 'beers';
+        beerlang = label + 's';
 
     CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
     Swal.fire({
@@ -35,6 +35,7 @@ function swalbeerdialog(formurl, amount) {
             'Do you really want to register ' + amount + ' ' + beerlang + '? You can not undo this.' +
             '<form id="createform" method="POST" action="' + formurl + '" accept-charset="UTF-8"><input name="_token" type="hidden" value="' + CSRF_TOKEN + '">' +
             '<input name="count" type="hidden" value="' + amount + '">' +
+            '<input name="beer_type_id" type="hidden" value="' + beer_type_id + '">' +
             '</form>',
         icon: 'question',
         showCancelButton: true,

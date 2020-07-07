@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SettingController extends Controller
 {
@@ -72,9 +73,11 @@ class SettingController extends Controller
      */
     public function update(Request $request, setting $setting)
     {
+        if ($this->authorize('update', Auth::user(), $setting)) {
+            $setting->update($request->all());
+            return redirect()->back()->with(['flash_message' => 'Changed setting ' . $setting->key . ' to ' . $setting->value]);
+        }
 
-        $setting->update($request->all());
-        return redirect()->back()->with(['flash_message' => 'Changed setting ' . $setting->key . ' to ' . $setting->value]);
     }
 
     /**

@@ -22,15 +22,17 @@
                             <table class="table table-dark" id="table-user-index">
                                 <thead>
                                 <tr>
-                                    <th scope="col">Add Beer</th>
+                                    <th scope="col">Add</th>
                                     <th scope="col">Nickname</th>
                                     @can('show details')
                                         <th scope="col">Name</th>@endcan
                                     @can('show details')
                                         <th scope="col">Email</th>@endcan
 
-                                    <th scope="col">Recent <i class="fas fa-beer"></i></th>
-                                    <th scope="col">Total <i class="fas fa-beer"></i></th>
+                                    <th scope="col">Recent <i class="fas fa-beer"></i><i class="fas fa-wine-bottle"></i>
+                                    </th>
+                                    <th scope="col">Total <i class="fas fa-beer"></i><i class="fas fa-wine-bottle"></i>
+                                    </th>
                                     <th scope="col">Credit (€)</th>
                                     <th scope="col"></th>
                                 </tr>
@@ -40,8 +42,11 @@
                                     <tr>
                                         <td>
                                             <a class="btn btn-sm btn-info"
-                                               onclick="swalbeerdialog('{{route('users.beers.store',['user'=>$item])}}',1); return false;"
+                                               onclick="swalbeerdialog('{{route('users.beers.store',['user'=>$item])}}',1,1,'beer'); return false;"
                                                href="#">+<i class="fas fa-beer"></i></a>
+                                            <a class="btn btn-sm btn-primary"
+                                               onclick="swalbeerdialog('{{route('users.beers.store',['user'=>$item])}}',1,2,'spezi'); return false;"
+                                               href="#">+<i class="fas fa-wine-bottle"></i></a>
                                         </td>
                                         <th scope="row"><a
                                                 href="{{ route('users.show', ['user' => $item]) }}">{{$item->nickname}}</a>
@@ -99,7 +104,8 @@
                                         dom: 'frtipB',
                                         buttons: [
                                             'csv', 'excel'
-                                        ]
+                                        ],
+                                        "pageLength": 50
                                     });
                                 });
                             </script>

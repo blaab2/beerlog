@@ -53,7 +53,8 @@ class SettingPolicy
      */
     public function update(User $user, Setting $setting)
     {
-        //
+        dd(1);
+        return $user->can('show details');
     }
 
     /**

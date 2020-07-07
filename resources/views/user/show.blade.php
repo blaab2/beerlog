@@ -14,7 +14,7 @@
             </div>
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Recent Beer Ranking</div>
+                    <div class="card-header">Recent Drinks Ranking</div>
                     <input type="hidden" id="data1" value="{{$users->toJson()}}"/>
                     <input type="hidden" id="data2" value="{{Auth::user()->id}}"/>
                     <input type="hidden" id="data3" value="{{$user->id}}"/>
@@ -25,18 +25,18 @@
                 </div>
             </div>
             @can('show details')
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">Local Beer History</div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <table class="table table-dark">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">date</th>
-                                        <th scope="col">price</th>
-                                        @can('show details')
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">Local Drinks History</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <table class="table table-dark">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">date</th>
+                                            <th scope="col">price</th>
+                                            @can('show details')
                                             <th scope="col">opt.</th>@endcan
                                     </tr>
                                     </thead>

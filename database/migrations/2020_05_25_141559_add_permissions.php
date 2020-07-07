@@ -8,10 +8,10 @@ use Spatie\Permission\Models\Permission;
 
 class AddPermissions extends Migration
 {
-	private $roles = ['admin'];
-    private $permissions = ['show finances','show details','make admin']; 
-  
-  
+    private $roles = ['admin'];
+    private $permissions = ['show finances', 'show details', 'make admin', 'manage drinks'];
+
+
     /**
      * Run the migrations.
      *
@@ -24,15 +24,14 @@ class AddPermissions extends Migration
 		{
 			Role::create(['name'=>$role]);
 		}
-		 
-		 
+
+
         //Create Permissions
-        foreach ($this->permissions as $permission){
-            Permission::create(['name' => $permission]);  
-      
+        foreach ($this->permissions as $permission) {
+            Permission::create(['name' => $permission]);
+
             //Assign Permission to Roles
-            foreach ($this->roles as $role)
-            {
+            foreach ($this->roles as $role) {
                 $role_obj = Role::findByName($role);
                 $role_obj->givePermissionTo($permission);
 
@@ -47,11 +46,11 @@ class AddPermissions extends Migration
      */
     public function down()
     {
-		
-		
+
+
         //Remove Permissions
          foreach ($this->permissions as $permission){
-          
+
             //Remove Permission from Roles
             foreach ($this->roles as $role)
             {
@@ -62,15 +61,15 @@ class AddPermissions extends Migration
             // Delete Permission
             $permission_obj = Permission::findByName($permission);
             $permission_obj->delete();
-      
-        }
-		
-		// Remove Roles
+
+         }
+
+        // Remove Roles
         foreach ($this->roles as $role)
 		{
 			Role::findByName($role)->delete();
 		}
-		
-		
+
+
     }
 }

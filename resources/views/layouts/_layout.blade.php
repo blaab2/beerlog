@@ -46,6 +46,11 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('home') }}">{{ __('Dashboard') }}</a>
                         </li>
+                        @can('manage drinks')
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('beertype.index') }}">{{ __('Beertype') }}</a>
+                            </li>
+                        @endcan
                         @can('show details')
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('settings.index') }}">{{ __('Settings') }}</a>
@@ -110,6 +115,13 @@
 @endif
 @if(session()->has('flash_error'))
     <script>toastr["error"]('{{session()->get('flash_error')}}');</script>
+@endif
+@if(session()->has('popup_message'))
+    <script> Swal.fire(
+            'Debts alert',
+            'Please pay your debts! {{session()->get('popup_message')}}€<br>Pay at <a href="https://paypal.me/pools/c/8qDeh9YPym" target="_blank">Paypal</a> or cash to Betriebsrat',
+            'warning'
+        )</script>
 @endif
 
 

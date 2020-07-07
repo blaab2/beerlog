@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Beer;
+use App\BeerType;
 use App\User;
 use App\Setting;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ class BeerController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -56,18 +57,22 @@ class BeerController extends Controller
             $count = intval($request->count);
         }
 
-        $beer_price = Setting::getValue('beer_price');
+        $beer_type_id = 1;
+        if (!is_null($request->beer_type_id)) {
+            $beer_type_id = intval($request->beer_type_id);
+        }
 
-        //dd($beer_price);
+        $beer_type = BeerType::find($beer_type_id);
 
         for ($i = 1; $i <= $count; $i++) {
             $user->beers()->create([
-                'cost' => $beer_price,
-                'reported_by' => Auth::user()->id
+                'cost' => $beer_type->price,
+                'reported_by' => Auth::user()->id,
+                'beer_type_id' => $beer_type_id
             ]);
         }
 
-        $msg = 'Added ' . $count . ' beer to ' . $user->nickname;
+        $msg = 'Added ' . $count . ' ' . $beer_type->name . ' to ' . $user->nickname;
 
         if ($request->ajax()) {
             return response()->json([
@@ -76,7 +81,7 @@ class BeerController extends Controller
             ]);
         }
 
-        return redirect()->back()->with(['flash_message' => 'Added ' . $count . ' beer to ' . $user->nickname]);
+        return redirect()->back()->with(['flash_message' => $msg]);
     }
 
     /**
@@ -116,8 +121,8 @@ class BeerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Beer  $beer
-     * @return \Illuminate\Http\Response
+     * @param \App\Beer $beer
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Beer $beer)
     {

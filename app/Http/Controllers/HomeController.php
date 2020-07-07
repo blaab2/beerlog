@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\BeerType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -35,7 +36,7 @@ class HomeController extends Controller
             ->withCount(['cashflows AS cashflow' => function ($query) {
                 $query->select(DB::raw("sum(amount) as amount_sum"));
             }])
-            ->withCount(['beers AS depts' => function ($query) {
+            ->withCount(['beers AS debts' => function ($query) {
                 $query->select(DB::raw("sum(cost) as cost_sum"));
             }])
             ->first();
@@ -67,9 +68,9 @@ class HomeController extends Controller
         }
 
 
-        $data['beer_price'] = \App\Setting::getValue('beer_price');
+        $data['beer_price'] = BeerType::find(1, ['price'])->price;
         $data['users'] = $users1->push($user)->merge($users2);
-        $data['beers'] = Auth::user()->beers()->with('reporter')->take(10)->orderBy('created_at', 'desc')->get();
+        $data['beers'] = Auth::user()->beers()->with('reporter', 'beerType')->take(10)->orderBy('created_at', 'desc')->get();
         $data['user'] = $user;
         $data['cashflows'] = Auth::user()->cashflows()->take(10)->orderBy('created_at', 'desc')->get();
         return view('home', $data);

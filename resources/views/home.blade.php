@@ -6,7 +6,6 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">Dashboard</div>
-
                     <div class="card-body">
                         @if (session('status'))
                             <div class="alert alert-success" role="alert">
@@ -20,27 +19,26 @@
                                 {!! Form::close() !!}
                             </div>
                             <div class="col-sm-4 py-1">
-                                {!! Form::open(['route' => ['addbeer']]) !!}
-                                {!! Form::hidden('count', 2) !!}
-                                {!! Form::rawSubmitBtn('Two Beer please! <i class="fas fa-beer"></i><i class="fas fa-beer"></i>',['class' => 'btn btn-lg btn-info w-100']) !!}
-
-                                {!! Form::close() !!}
+                                <a class="btn btn-lg btn-info w-100"
+                                   onclick="swalbeerdialog('{{route('addbeer')}}',2,1,'beer'); return false;" href="#">Two
+                                    Beer
+                                    please!!!
+                                    <i class="fas fa-beer"></i><i class="fas fa-beer"></i></a>
                             </div>
                             <div class="col-sm-4 py-1">
-                                <a class="btn btn-lg btn-info w-100"
-                                   onclick="swalbeerdialog('{{route('addbeer')}}',20); return false;" href="#">Crate
-                                    please!!!
-                                    20x<i class="fas fa-beer"></i></a>
+                                <a class="btn btn-lg btn-primary w-100"
+                                   onclick="swalbeerdialog('{{route('addbeer')}}',1,2,'spezi'); return false;" href="#">One
+                                    Spezi please! <i class="fas fa-wine-bottle"></i></a>
                             </div>
                         </div>
-                            <div class="row justify-content-center">The price for one beer
-                                is {{number_format($beer_price,2)}}€ at the
-                                moment.
-                            </div>
-                            <hr/>
-                            <div class="row justify-content-center">
+                        <div class="row justify-content-center">The price for one beer
+                            is {{number_format($beer_price,2)}}€ at the
+                            moment.
+                        </div>
+                        <hr/>
+                        <div class="row justify-content-center">
 
-                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -52,13 +50,13 @@
                     <div class="card-body"><p>
                             nickname: {{$user->nickname}}</p>
                         <p>
-                            total beer count: {{$user->total_beers_count}}<br>
-                            recent beer count: {{$user->beers_count}}</p>
+                            total drinks count: {{$user->total_beers_count}}<br>
+                            recent drinks count: {{$user->beers_count}}</p>
                         <p>
                             payed: {{$user->cashflow}}€<br>
-                            debts: {{$user->depts}}€<br>
-                            total: <span @if($user->cashflow-$user->depts<0)class="text-warning"@endif>
-                            {{$user->cashflow-$user->depts}}€</span></p>
+                            debts: {{$user->debts}}€<br>
+                            total: <span @if($user->cashflow-$user->debts<0)class="text-warning"@endif>
+                            {{$user->cashflow-$user->debts}}€</span></p>
                         <p>
                             Last beer registered:<br>{{$beers->first()->created_at}}
                         </p>
@@ -68,7 +66,7 @@
             </div>
             <div class="col-lg-9">
                 <div class="card">
-                    <div class="card-header">Recent Beer Ranking</div>
+                    <div class="card-header">Recent Drinks Ranking</div>
                     <input type="hidden" id="data1" value="{{$users->toJson()}}"/>
                     <input type="hidden" id="data2" value="{{Auth::user()->id}}"/>
                     <div class="card-body">
@@ -79,7 +77,7 @@
             </div>
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Local Beer History</div>
+                    <div class="card-header">Local Drinks History</div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
@@ -89,6 +87,7 @@
                                         <th scope="col">reporter</th>
                                         <th scope="col">date</th>
                                         <th scope="col">price</th>
+                                        <th scope="col">type</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -98,6 +97,7 @@
                                             <th scope="row">
                                                 {{$item->created_at}}</th>
                                             <td>{{$item->cost}}</td>
+                                            <td>{{$item->beerType->name}}</td>
                                         </tr>
                                     @endforeach
 
@@ -111,6 +111,7 @@
                                         <th scope="col">reporter</th>
                                         <th scope="col">date</th>
                                         <th scope="col">price</th>
+                                        <th scope="col">type</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -120,6 +121,7 @@
                                             <th scope="row">
                                                 {{$item->created_at}}</th>
                                             <td>{{$item->cost}}</td>
+                                            <td>{{$item->beerType->name}}</td>
                                         </tr>
                                     @endforeach
 
