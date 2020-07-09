@@ -58,7 +58,7 @@
                             total: <span @if($user->cashflow-$user->debts<0)class="text-warning"@endif>
                             {{$user->cashflow-$user->debts}}€</span></p>
                         <p>
-                            Last beer registered:<br>{{$beers->first()->created_at}}
+                            Last beer registered:<br>@if($beers->count()>0){{$beers->first()->created_at}}@endif
                         </p>
                     </div>
                 </div>
