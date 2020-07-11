@@ -51,7 +51,8 @@
                             nickname: {{$user->nickname}}</p>
                         <p>
                             total drinks count: {{$user->total_beers_count}}<br>
-                            recent drinks count: {{$user->beers_count}}</p>
+                            recent drinks count: {{$user->drinks_count}}<br>
+                            recent beers count: {{$user->beers_count}}</p>
                         <p>
                             payed: {{$user->cashflow}}€<br>
                             debts: {{$user->debts}}€<br>
@@ -66,7 +67,7 @@
             </div>
             <div class="col-lg-9">
                 <div class="card">
-                    <div class="card-header">Recent Drinks Ranking</div>
+                    <div class="card-header">Recent Beer Ranking</div>
                     <input type="hidden" id="data1" value="{{$users->toJson()}}"/>
                     <input type="hidden" id="data2" value="{{Auth::user()->id}}"/>
                     <div class="card-body">

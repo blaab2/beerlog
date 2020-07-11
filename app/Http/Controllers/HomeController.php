@@ -31,6 +31,10 @@ class HomeController extends Controller
         $user = \App\User::where('id', '=', Auth::user()->id)
             ->withCount('beers AS total_beers_count')
             ->withCount(['beers AS beers_count' => function ($query) {
+                $query->whereDate('created_at', '>', Carbon::now()->subDays(30))
+                    ->where('beer_type_id', '=', 1);
+            }])
+            ->withCount(['beers AS drinks_count' => function ($query) {
                 $query->whereDate('created_at', '>', Carbon::now()->subDays(30));
             }])
             ->withCount(['cashflows AS cashflow' => function ($query) {
@@ -46,11 +50,13 @@ class HomeController extends Controller
         $users1 = \App\User::select('id', 'nickname')
             ->where('id', '!=', $user->id)
             ->withCount(['beers AS beers_count' => function ($query) {
-                $query->whereDate('created_at', '>', Carbon::now()->subDays(30));
+                $query->whereDate('created_at', '>', Carbon::now()->subDays(30))
+                    ->where('beer_type_id', '=', 1);
             }])
             ->having('beers_count', '>=', $user_count)->orderBy('beers_count', 'asc')->take(5)->get();
         $users2 = \App\User::select('id', 'nickname')->withCount(['beers AS beers_count' => function ($query) {
-            $query->whereDate('created_at', '>', Carbon::now()->subDays(30));
+            $query->whereDate('created_at', '>', Carbon::now()->subDays(30))
+                ->where('beer_type_id', '=', 1);
         }])
             ->having('beers_count', '<', $user_count)->orderBy('beers_count', 'desc')->take(5)->get();
 
