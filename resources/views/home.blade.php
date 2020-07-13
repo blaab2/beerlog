@@ -55,7 +55,7 @@
                             recent beers count: {{$user->beers_count}}</p>
                         <p>
                             payed: {{$user->cashflow}}€<br>
-                            debts: {{$user->debts}}€<br>
+                            spend: {{$user->debts}}€<br>
                             total: <span @if($user->cashflow-$user->debts<0)class="text-warning"@endif>
                             {{$user->cashflow-$user->debts}}€</span></p>
                         <p>

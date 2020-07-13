@@ -25,14 +25,17 @@
                                     <th scope="col">Add</th>
                                     <th scope="col">Nickname</th>
                                     @can('show details')
-                                        <th scope="col">Name</th>@endcan
+                                        <th scope="col">Name</th>
+                                    @endcan
                                     @can('show details')
-                                        <th scope="col">Email</th>@endcan
-
+                                        <th scope="col">Email</th>
+                                    @endcan
                                     <th scope="col">Recent <i class="fas fa-beer"></i><i class="fas fa-wine-bottle"></i>
                                     </th>
-                                    <th scope="col">Total <i class="fas fa-beer"></i><i class="fas fa-wine-bottle"></i>
-                                    </th>
+                                    @can('show details')
+                                        <th scope="col">Total <i class="fas fa-beer"></i><i
+                                                class="fas fa-wine-bottle"></i></th>
+                                    @endcan
                                     <th scope="col">Credit (€)</th>
                                     <th scope="col"></th>
                                 </tr>
@@ -52,12 +55,20 @@
                                                 href="{{ route('users.show', ['user' => $item]) }}">{{$item->nickname}}</a>
                                         </th>
                                         @can('show details')
-                                            <td>{{$item->name}}</td>@endcan
+                                            <td>{{$item->name}}</td>
+                                        @endcan
                                         @can('show details')
-                                            <td>{{$item->email}}</td>@endcan
+                                            <td>{{$item->email}}</td>
+                                        @endcan
                                         <td>{{$item->beers_count}}</td>
-                                        <td>{{$item->total_beers_count}}</td>
-                                        <td @if(number_format($item->cashflow-$item->depts<0))class="text-warning"@endif>{{ number_format($item->cashflow-$item->depts, 2, '.', '.')}}</td>
+                                        @can('show details')
+                                            <td>{{$item->total_beers_count}}</td>
+                                        @endcan
+                                        @can('show finances')
+                                            <td @if(number_format($item->cashflow-$item->depts<0))class="text-warning"@endif>{{ number_format($item->cashflow-$item->depts, 2, '.', '.')}}</td>
+                                        @else
+                                            <td @if(number_format($item->cashflow-$item->depts<0))class="text-warning"@endif>{{ number_format($item->cashflow-$item->depts, 2, '.', '.')<0?'has debts':"-"}}</td>
+                                        @endcan
                                         <td>
                                             <a class="btn btn-sm btn-primary" role="button"
                                                href="{{ route('users.show', ['user' => $item]) }}"
@@ -98,7 +109,7 @@
                                             },
                                             {
                                                 "targets": [3],
-                                                "visible": false
+                                                "visible": true
                                             }
                                         ],
                                         dom: 'frtipB',
