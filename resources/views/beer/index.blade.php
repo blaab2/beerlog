@@ -23,16 +23,18 @@
                                 <thead>
                                 <tr>
                                     <th scope="col">id</th>
-                                    <th scope="col">setting</th>
-                                    <th scope="col">value</th>
+                                    <th scope="col">date</th>
+                                    <th scope="col">type</th>
+                                    <th scope="col">price</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach ($beers as $item)
                                     <tr>
                                         <td>{{$item->id}}</td>
+                                        <td>{{$item->created_at}}</td>
+                                        <td>{{$item->beertype->name}}</td>
                                         <td>{{$item->cost}}</td>
-
                                     </tr>
                                 @endforeach
 
@@ -40,7 +42,9 @@
                             </table>
                             <script>
                                 $(document).ready(function () {
-                                    $('#table-user-index').DataTable({});
+                                    $('#table-user-index').DataTable({
+                                        "order": [[0, "desc"]]
+                                    });
                                 });
                             </script>
                         </div>

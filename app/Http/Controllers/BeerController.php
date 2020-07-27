@@ -19,7 +19,7 @@ class BeerController extends Controller
     public function index()
     {
         if ($this->authorize('viewAny', Beer::class)) {
-            $data['beers'] = Beer::all();
+            $data['beers'] = Beer::with('reporter', 'beerType')->orderBy('created_at', 'desc')->take(50)->get();
             return view('beer.index', $data);
         }
     }

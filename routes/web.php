@@ -17,20 +17,19 @@ Route::get('/', function () {return view('welcome');});
 
 Route::get('/impressum', function () {return view('dsgvo');})->name('impressum');
 
-
 Auth::routes(['verify' => true]);
-
-
 
 Route::group(['middleware' => ['verified']], function () {
 
-	Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/home', 'HomeController@index')->name('home');
 
     Route::resource('users', 'UserController');
     Route::post('users/{user}/swapAdminStatus', 'UserController@swapAdminStatus')->name('users.swapadmin');
 
     Route::post('/addbeer', 'BeerController@addBeer')->name('addbeer');
     Route::resource('users.beers', 'BeerController')->shallow();
+    Route::get('beers', 'BeerController@index')->name('beers.index');
+
 
     Route::resource('users.cashflow', 'CashflowController')->shallow();
 
