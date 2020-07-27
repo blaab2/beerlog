@@ -35,29 +35,33 @@
                                         <thead>
                                         <tr>
                                             <th scope="col">date</th>
+                                            <th scope="col">type</th>
                                             <th scope="col">price</th>
                                             @can('show details')
-                                            <th scope="col">opt.</th>@endcan
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach ($beers->take(5) as $item)
-                                        <tr>
-                                            <th scope="row">{{$item->created_at}}</th>
-                                            <td>{{$item->cost}}</td>
-
-
-                                            @can('show details')
-                                                <td><a class="btn btn-sm btn-info"
-                                                       onclick="swalbeerdeletedialog('{{route('beers.destroy',['beer'=>$item])}}'); return false;"
-                                                       href="#"><i class="fas fa-trash"></i></a>
-                                                </td>@endcan
+                                                <th scope="col">reporter</th>
+                                                <th scope="col">opt.</th>@endcan
                                         </tr>
-                                    @endforeach
+                                        </thead>
+                                        <tbody>
+                                        @foreach ($beers->take(5) as $item)
+                                            <tr>
+                                                <th scope="row">{{$item->created_at}}</th>
+                                                <td>{{$item->beerType->name}}</td>
+                                                <td>{{$item->cost}}</td>
 
-                                    </tbody>
-                                </table>
-                            </div>
+
+                                                @can('show details')
+                                                    <td>{{$item->reporter->nickname}}</td>
+                                                    <td><a class="btn btn-sm btn-info"
+                                                           onclick="swalbeerdeletedialog('{{route('beers.destroy',['beer'=>$item])}}'); return false;"
+                                                           href="#"><i class="fas fa-trash"></i></a>
+                                                    </td>@endcan
+                                            </tr>
+                                        @endforeach
+
+                                        </tbody>
+                                    </table>
+                                </div>
                             <div class="col-md-6">
                                 <table class="table table-dark">
                                     <thead>
