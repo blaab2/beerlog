@@ -46,6 +46,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('home') }}">{{ __('Dashboard') }}</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('beers.index') }}">{{ __('Drinks') }}</a>
+                        </li>
                         @can('manage drinks')
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('beertype.index') }}">{{ __('Beertype') }}</a>
