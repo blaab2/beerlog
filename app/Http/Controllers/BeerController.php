@@ -6,6 +6,7 @@ use App\Beer;
 use App\BeerType;
 use App\User;
 use App\Setting;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,7 +20,14 @@ class BeerController extends Controller
     public function index()
     {
         if ($this->authorize('viewAny', Beer::class)) {
-            $data['beers'] = Beer::with('reporter', 'beerType')->orderBy('created_at', 'desc')->take(50)->get();
+            $data['beers'] = Beer::select(['created_at', 'cost', 'id', 'beer_type_id'])->with('reporter', 'beerType:id,name')->orderBy('created_at', 'desc')
+                ->whereDate('created_at', '>', Carbon::now()->subMonths(6))->get();
+            $data['beers_y0'] = Beer::where('id', '<', $data['beers']->last()->id)->count();
+
+            //dd( $data['beers']);
+            //dd($data['beers_y0'] );
+
+
             return view('beer.index', $data);
         }
     }
