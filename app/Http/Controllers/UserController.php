@@ -101,7 +101,7 @@ class UserController extends Controller
 
         $data['beers'] = $user->beers()->with('reporter')->take(10)->orderBy('created_at', 'desc')->get();
         $data['user'] = $user;
-        $data['cashflows'] = Auth::user()->cashflows()->take(10)->orderBy('created_at', 'desc')->get();
+        $data['cashflows'] = $user->cashflows()->take(10)->orderBy('created_at', 'desc')->get();
         return view('user.show', $data);
     }
 
