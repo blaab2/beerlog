@@ -81,10 +81,62 @@
                                     </tbody>
                                 </table>
                             </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">Local Cashflow History</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <table class="table table-dark">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">reporter</th>
+                                            <th scope="col">date</th>
+                                            <th scope="col">price</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach ($cashflows->take(5) as $item)
+                                            <tr>
+                                                <td>{{$item->reporter->name}}</td>
+                                                <th scope="row">
+                                                    {{$item->created_at}}</th>
+                                                <td>{{$item->amount}}</td>
+                                            </tr>
+                                        @endforeach
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-6">
+                                    <table class="table table-dark">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">reporter</th>
+                                            <th scope="col">date</th>
+                                            <th scope="col">amount</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach ($cashflows->skip(5) as $item)
+                                            <tr>
+                                                <td>{{$item->reporter->name}}</td>
+                                                <th scope="row">{{$item->created_at}}</th>
+                                                <td>{{$item->amount}}</td>
+                                            </tr>
+                                        @endforeach
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             @endcan
         </div>
     </div>

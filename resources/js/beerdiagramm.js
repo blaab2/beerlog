@@ -48,7 +48,7 @@ var myChart = new Chart(ctx, {
     data: {
         labels: inputdata.map(x => x['nickname']),
         datasets: [{
-            label: '# of beers',
+            label: '# of bottles',
             data: inputdata.map(x => x['beers_count']),
             backgroundColor: backgroundColors,
             borderColor: borderColors,
