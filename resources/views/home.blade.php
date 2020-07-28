@@ -144,7 +144,7 @@
                                     <tr>
                                         <th scope="col">reporter</th>
                                         <th scope="col">date</th>
-                                        <th scope="col">price</th>
+                                        <th scope="col">amount</th>
                                     </tr>
                                     </thead>
                                     <tbody>
