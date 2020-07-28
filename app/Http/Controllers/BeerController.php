@@ -21,7 +21,7 @@ class BeerController extends Controller
     {
         if ($this->authorize('viewAny', Beer::class)) {
             $data['beers'] = Beer::select(['created_at', 'cost', 'id', 'beer_type_id'])->with('reporter', 'beerType:id,name')->orderBy('created_at', 'desc')
-                ->whereDate('created_at', '>', Carbon::now()->subMonths(6))->get();
+                ->whereDate('created_at', '>', Carbon::now()->subMonths(2))->get();
             $data['beers_y0'] = Beer::where('id', '<', $data['beers']->last()->id)->count();
 
             //dd( $data['beers']);
