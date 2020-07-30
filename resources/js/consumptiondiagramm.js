@@ -21,20 +21,6 @@ function drawConsumptionChart(diagrammdata, startdate, drinksperday, enddate, ti
                     backgroundColor: '#F39C12',
                     borderColor: '#F39C12',
                     stack: 'Stack 0',
-                },
-                {
-                    label: "Average",
-                    data: [{
-                        x: startdate,
-                        y: drinksperday
-                    }, {
-                        t: enddate,
-                        y: drinksperday
-                    }],
-                    fill: false,
-                    backgroundColor: '#375a7f',
-                    borderColor: '#375a7f',
-                    type: 'line'
                 }
             ]
         },
