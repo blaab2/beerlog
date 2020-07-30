@@ -20,7 +20,7 @@ function drawConsumptionChart(diagrammdata, startdate, drinksperday, enddate, ti
                     fill: true,
                     backgroundColor: '#F39C12',
                     borderColor: '#F39C12',
-                    stack: 'Stack 1',
+                    stack: 'Stack 0',
                 },
                 {
                     label: "Average",
@@ -143,28 +143,48 @@ function initTable(data) {
 }
 
 function processData() {
+    // get the data
     var data = JSON.parse($("#data").val());
 
+    // group the data by beer_type
     var data_sorted = _.groupBy(data, function (data) {
         return data['beer_type']['name'];
     });
 
     var drinks_days = {};
     var diagrammdata = {};
-    for (var beertype in data_sorted) {
+    var daysset = new Set();
 
+
+    //process all beertype data and collect all days where drinks have been consumed
+    for (var beertype in data_sorted) {
         drinks_days[beertype] = _.countBy(data_sorted[beertype], function (date) {
             return moment(date.created_at).startOf('day').format();
         });
+    }
 
+    //add "empty days" and build the data for the diagramm
+    for (var beertype in data_sorted) {
+
+        // add empty days to enable stacking the diagramm bars
+        for (var day = daysset.values(), val = null; val = day.next().value;) {
+            if (drinks_days[beertype][moment(val).startOf('day').format()] == null) {
+                drinks_days[beertype][moment(val).startOf('day').format()] = 0;
+            }
+        }
 
         let data = [];
 
         for (var prop in drinks_days[beertype]) {
             data.push({'t': moment(prop), 'y': drinks_days[beertype][prop]});
+            daysset.add(moment(prop));
         }
 
         diagrammdata[beertype] = data;
+
+        diagrammdata[beertype].sort(function (a, b) {
+            return moment(a.t).unix() - moment(b.t).unix();
+        });
 
     }
 
