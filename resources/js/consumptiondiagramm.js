@@ -159,6 +159,7 @@ function processData() {
     //process all beertype data and collect all days where drinks have been consumed
     for (var beertype in data_sorted) {
         drinks_days[beertype] = _.countBy(data_sorted[beertype], function (date) {
+            daysset.add(moment(date.created_at).startOf('day').format());
             return moment(date.created_at).startOf('day').format();
         });
     }
@@ -177,7 +178,7 @@ function processData() {
 
         for (var prop in drinks_days[beertype]) {
             data.push({'t': moment(prop), 'y': drinks_days[beertype][prop]});
-            daysset.add(prop);
+
         }
 
         diagrammdata[beertype] = data;
