@@ -18,8 +18,7 @@ class BeerPolicy
      */
     public function viewAny(User $user)
     {
-        //return $user->can('show details');
-        return 1;
+        return $user->can('show details');
     }
 
     /**

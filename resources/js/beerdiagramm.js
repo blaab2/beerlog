@@ -1,5 +1,5 @@
 //Chart = require('chart.js');
-//ChartDataLabels = require('chartjs-plugin-datalabels');
+ChartDataLabels = require('chartjs-plugin-datalabels');
 
 //var style = getComputedStyle(document.body);
 var theme = {};

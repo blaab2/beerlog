@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Drinks History (2 month, all users)</div>
+                    <div class="card-header">Drinks History (2 month, {{$user_label}})</div>
                     @if (count($errors) > 0)
                         <div class="alert alert-danger">
                             <strong>Whoops!</strong> There were some problems with your input.<br><br>
@@ -27,7 +27,7 @@
                             <div class="col-lg-3 col-sm-6">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h6 class="card-subtitle mb-2 text-muted">last 2 month</h6>
+                                        <h6 class="card-subtitle mb-2 text-muted">last 2 month, {{$user_label}}</h6>
                                         <canvas id="pieChart1" width="80" height="80"></canvas>
                                     </div>
                                 </div>

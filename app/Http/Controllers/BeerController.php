@@ -17,19 +17,26 @@ class BeerController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(User $user)
     {
-        if ($this->authorize('viewAny', Beer::class)) {
+        if ($user->id == null) {
+
             $data['beers'] = Beer::select(['created_at', 'cost', 'id', 'beer_type_id'])->with('reporter', 'beerType:id,name')->orderBy('created_at', 'desc')
                 ->whereDate('created_at', '>', Carbon::now()->subMonths(2))->get();
             $data['beers_y0'] = Beer::where('id', '<', $data['beers']->last()->id)->count();
 
-
-            //dd( $data['beers']);
-            //dd($data['beers_y0'] );
-
-
+            $data['user_label'] = 'all users';
             return view('beer.index', $data);
+        } else {
+            if ($user->id == Auth::id() || $this->authorize('viewAny', Beer::class)) {
+                $data['beers'] = Beer::select(['created_at', 'cost', 'id', 'beer_type_id'])->with('reporter', 'beerType:id,name')->orderBy('created_at', 'desc')
+                    ->whereDate('created_at', '>', Carbon::now()->subMonths(2))->where('user_id', '=', $user->id)->get();
+                $data['beers_y0'] = Beer::whereDate('created_at', '>', Carbon::now()
+                    ->subMonths(2))->where('user_id', '=', $user->id)->count();
+
+                $data['user_label'] = $user->nickname;
+                return view('beer.index', $data);
+            }
         }
     }
 
@@ -43,20 +50,20 @@ class BeerController extends Controller
 
     }
 
-	 /**
+    /**
      * Add a beer to this resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function addBeer(Request $request)
     {
-		return $this->store(Auth::user(),$request);
+        return $this->store(Auth::user(), $request);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(User $user, Request $request)
@@ -96,7 +103,7 @@ class BeerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Beer  $beer
+     * @param \App\Beer $beer
      * @return \Illuminate\Http\Response
      */
     public function show(Beer $beer)
@@ -107,7 +114,7 @@ class BeerController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Beer  $beer
+     * @param \App\Beer $beer
      * @return \Illuminate\Http\Response
      */
     public function edit(Beer $beer)
@@ -118,8 +125,8 @@ class BeerController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Beer  $beer
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Beer $beer
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Beer $beer)

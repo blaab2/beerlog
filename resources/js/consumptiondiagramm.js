@@ -20,7 +20,7 @@ function drawConsumptionChart(diagrammdata, startdate, drinksperday, enddate, ti
                     fill: true,
                     backgroundColor: '#F39C12',
                     borderColor: '#F39C12',
-                    stack: 'Stack 0',
+                    stack: 'Stack 1',
                 },
                 {
                     label: "Average",
@@ -72,13 +72,8 @@ function drawConsumptionChart(diagrammdata, startdate, drinksperday, enddate, ti
                     ticks: {
                         fontColor: '#fff'
                     },
-                    stacked: false
+                    stacked: true
                 }]
-            },
-            plugins: {
-                datalabels: {
-                    display: false,
-                }
             }
         }
     };
