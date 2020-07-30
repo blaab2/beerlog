@@ -24,6 +24,7 @@ class BeerController extends Controller
                 ->whereDate('created_at', '>', Carbon::now()->subMonths(2))->get();
             $data['beers_y0'] = Beer::where('id', '<', $data['beers']->last()->id)->count();
 
+
             //dd( $data['beers']);
             //dd($data['beers_y0'] );
 
