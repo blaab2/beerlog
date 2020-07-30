@@ -100,7 +100,7 @@ $(document).ready(function () {
                         max: enddate,
                         min: startdate
                     },
-                    stacked: false
+                    stacked: true
                 }],
                 yAxes: [{
                     scaleLabel: {
