@@ -1,45 +1,7 @@
 import {round} from "lodash";
 
-$(document).ready(function () {
-    var data = JSON.parse($("#data").val());
-
-    var data_sorted = _.groupBy(data, function (data) {
-        return data['beer_type']['name'];
-    });
-
-    var counts = {};
-    var diagrammdata = {};
-    for (var beertype in data_sorted) {
-
-        counts[beertype] = _.countBy(data_sorted[beertype], function (date) {
-            return moment(date.created_at).startOf('day').format();
-        });
-
-        let data = [];
-
-        for (var prop in counts[beertype]) {
-            data.push({'t': moment(prop), 'y': counts[beertype][prop]});
-        }
-
-        diagrammdata[beertype] = data;
-
-    }
-
-    var enddate = moment().add(1, 'days');
-    var startdate = moment().add(-2, 'months');
-
-    var duration = moment.duration(enddate.diff(startdate));
-    var days = duration.asDays();
-    var drinkscount = data.length;
-    var drinksperday = round(drinkscount / days, 2);
-
-    var timeFormat = 'DD/MM/YYYY';
-
-    var ctx = document.getElementById('myChart');
-
-
-    var timeFormat = 'DD/MM/YYYY';
-
+function drawConsumptionChart(diagrammdata, startdate, drinksperday, enddate, timeFormat) {
+    var ctx = document.getElementById('consumptionChart');
     var config = {
         type: 'bar',
         data: {
@@ -116,12 +78,58 @@ $(document).ready(function () {
             plugins: {
                 datalabels: {
                     display: false,
-                },
+                }
             }
         }
     };
-
     var chart = new Chart(ctx, config);
+}
+
+function drawPieChart(data_sorted) {
+    var ctx = document.getElementById('pieChart1');
+    var config = {
+        type: 'pie',
+        data: {
+            datasets: [{
+                data: [
+                    data_sorted["Spezi"].length,
+                    data_sorted["Beer"].length
+                ],
+                backgroundColor: [
+                    '#00bc8c',
+                    '#F39C12'
+                ],
+                borderColor: [
+                    '#FFFFFF',
+                    '#FFFFFF'
+                ],
+                borderWidth: 1
+            }],
+            // These labels appear in the legend and in the tooltips when hovering different arcs
+            labels: [
+                'Spezi',
+                'Beer'
+            ]
+        },
+        options: {
+            legend: {
+                display: true,
+                labels: {
+                    fontColor: '#fff'
+                }
+            },
+            plugins: {
+                datalabels: {
+                    color: '#fff',
+                    display: true,
+                }
+            }
+        }
+    };
+    var chart = new Chart(ctx, config);
+}
+
+function initTable(data) {
     $('#table-user-index').DataTable({
         data: data,
         columns: [
@@ -137,5 +145,53 @@ $(document).ready(function () {
 
         "order": [[0, "desc"]]
     });
+}
+
+function processData() {
+    var data = JSON.parse($("#data").val());
+
+    var data_sorted = _.groupBy(data, function (data) {
+        return data['beer_type']['name'];
+    });
+
+    var drinks_days = {};
+    var diagrammdata = {};
+    for (var beertype in data_sorted) {
+
+        drinks_days[beertype] = _.countBy(data_sorted[beertype], function (date) {
+            return moment(date.created_at).startOf('day').format();
+        });
+
+
+        let data = [];
+
+        for (var prop in drinks_days[beertype]) {
+            data.push({'t': moment(prop), 'y': drinks_days[beertype][prop]});
+        }
+
+        diagrammdata[beertype] = data;
+
+    }
+
+    var enddate = moment().add(1, 'days');
+    var startdate = moment().add(-2, 'months');
+
+    var duration = moment.duration(enddate.diff(startdate));
+    var days = duration.asDays();
+    var drinkscount = data.length;
+    var drinksperday = round(drinkscount / days, 2);
+
+    var timeFormat = 'DD/MM/YYYY';
+    return {data, diagrammdata, enddate, startdate, drinksperday, timeFormat, data_sorted};
+}
+
+$(document).ready(function () {
+    var {data, diagrammdata, enddate, startdate, drinksperday, timeFormat, data_sorted} = processData();
+
+    drawConsumptionChart(diagrammdata, startdate, drinksperday, enddate, timeFormat);
+
+    drawPieChart(data_sorted);
+
+    initTable(data);
 
 });
