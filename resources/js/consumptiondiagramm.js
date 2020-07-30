@@ -3,15 +3,26 @@ import {round} from "lodash";
 $(document).ready(function () {
     var data = JSON.parse($("#data").val());
 
-
-    var counts = _.countBy(data, function (date) {
-        return moment(date.created_at).startOf('day').format();
+    var data_sorted = _.groupBy(data, function (data) {
+        return data['beer_type']['name'];
     });
 
-    var diagrammdata = [];
+    var counts = {};
+    var diagrammdata = {};
+    for (var beertype in data_sorted) {
 
-    for (var prop in counts) {
-        diagrammdata.push({'t': moment(prop), 'y': counts[prop]});
+        counts[beertype] = _.countBy(data_sorted[beertype], function (date) {
+            return moment(date.created_at).startOf('day').format();
+        });
+
+        let data = [];
+
+        for (var prop in counts[beertype]) {
+            data.push({'t': moment(prop), 'y': counts[beertype][prop]});
+        }
+
+        diagrammdata[beertype] = data;
+
     }
 
     var enddate = moment().add(1, 'days');
@@ -34,11 +45,20 @@ $(document).ready(function () {
         data: {
             datasets: [
                 {
-                    label: "Consumption",
-                    data: diagrammdata,
+                    label: "Spezi Consumption",
+                    data: diagrammdata['Spezi'],
                     fill: true,
                     backgroundColor: '#00bc8c',
-                    borderColor: '#00bc8c'
+                    borderColor: '#00bc8c',
+                    stack: 'Stack 0',
+                },
+                {
+                    label: "Beer Consumption",
+                    data: diagrammdata['Beer'],
+                    fill: true,
+                    backgroundColor: '#F39C12',
+                    borderColor: '#F39C12',
+                    stack: 'Stack 0',
                 },
                 {
                     label: "Average",
@@ -50,8 +70,8 @@ $(document).ready(function () {
                         y: drinksperday
                     }],
                     fill: false,
-                    backgroundColor: '#F39C12',
-                    borderColor: '#F39C12',
+                    backgroundColor: '#375a7f',
+                    borderColor: '#375a7f',
                     type: 'line'
                 }
             ]
@@ -79,7 +99,8 @@ $(document).ready(function () {
                         fontColor: '#fff',
                         max: enddate,
                         min: startdate
-                    }
+                    },
+                    stacked: false
                 }],
                 yAxes: [{
                     scaleLabel: {
@@ -88,7 +109,8 @@ $(document).ready(function () {
                     },
                     ticks: {
                         fontColor: '#fff'
-                    }
+                    },
+                    stacked: false
                 }]
             },
             plugins: {
