@@ -1,3 +1,5 @@
+import {round} from "lodash";
+
 $(document).ready(function () {
     var data = JSON.parse($("#data").val());
 
@@ -6,13 +8,19 @@ $(document).ready(function () {
         return moment(date.created_at).startOf('day').format();
     });
 
-
     var diagrammdata = [];
 
     for (var prop in counts) {
         diagrammdata.push({'t': moment(prop), 'y': counts[prop]});
     }
 
+    var enddate = moment().add(1, 'days');
+    var startdate = moment().add(-2, 'months');
+
+    var duration = moment.duration(enddate.diff(startdate));
+    var days = duration.asDays();
+    var drinkscount = data.length;
+    var drinksperday = round(drinkscount / days, 2);
 
     var timeFormat = 'DD/MM/YYYY';
 
@@ -31,6 +39,20 @@ $(document).ready(function () {
                     fill: true,
                     backgroundColor: '#00bc8c',
                     borderColor: '#00bc8c'
+                },
+                {
+                    label: "Average",
+                    data: [{
+                        x: startdate,
+                        y: drinksperday
+                    }, {
+                        t: enddate,
+                        y: drinksperday
+                    }],
+                    fill: false,
+                    backgroundColor: '#F39C12',
+                    borderColor: '#F39C12',
+                    type: 'line'
                 }
             ]
         },
@@ -55,7 +77,8 @@ $(document).ready(function () {
                     },
                     ticks: {
                         fontColor: '#fff',
-                        max: moment().add(1, 'days')
+                        max: enddate,
+                        min: startdate
                     }
                 }],
                 yAxes: [{
