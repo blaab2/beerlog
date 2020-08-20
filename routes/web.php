@@ -26,8 +26,8 @@ Route::group(['middleware' => ['verified']], function () {
     Route::resource('users', 'UserController');
     Route::post('users/{user}/swapAdminStatus', 'UserController@swapAdminStatus')->name('users.swapadmin');
 
-    Route::post('/addbeer', 'BeerController@addBeer')->name('addbeer');
-    Route::resource('users.beers', 'BeerController')->shallow();
+    Route::post('/addbeer', 'BeerController@addBeer')->name('addbeer')->middleware('checkdebts');
+    Route::resource('users.beers', 'BeerController')->shallow()->middleware('checkdebts');
     Route::get('beers', 'BeerController@index')->name('beers.index');
 
     Route::any('beers2', 'BeerController@index_ajax');
