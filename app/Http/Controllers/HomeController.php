@@ -27,7 +27,63 @@ class HomeController extends Controller
      */
     public function index()
     {
+        // Get data for the current user
+        $user = $this->getUserData();
 
+        // Get the Data for the beerdiagramm
+        $users = $this->getBeerdiagrammData($user);
+
+
+        $data['beer_price'] = BeerType::find(1, ['price'])->price;
+        $data['users'] = $users;
+        $data['beers'] = Auth::user()->beers()->with('reporter', 'beerType')->take(10)->orderBy('created_at', 'desc')->get();
+        $data['user'] = $user;
+        $data['cashflows'] = Auth::user()->cashflows()->take(10)->orderBy('created_at', 'desc')->get();
+        return view('home', $data);
+    }
+
+    /**
+     * @param $user
+     * @return mixed
+     */
+    private function getBeerdiagrammData($user)
+    {
+        $user_beer_count = $user->beers_count;
+
+        $users1 = \App\User::select('id', 'nickname')
+            ->where('id', '!=', $user->id)
+            ->withCount(['beers AS beers_count' => function ($query) {
+                $query->whereDate('created_at', '>', Carbon::now()->subDays(30))
+                    ->where('beer_type_id', '=', 1);
+            }])
+            ->having('beers_count', '>=', $user_beer_count)->orderBy('beers_count', 'asc')->take(5)->get();
+        $users2 = \App\User::select('id', 'nickname')->withCount(['beers AS beers_count' => function ($query) {
+            $query->whereDate('created_at', '>', Carbon::now()->subDays(30))
+                ->where('beer_type_id', '=', 1);
+        }])
+            ->having('beers_count', '<', $user_beer_count)->orderBy('beers_count', 'desc')->take(5)->get();
+
+        $show_count = 5;
+        $total_count = $users1->count() + $users2->count();
+        $diff_count = $total_count - $show_count;
+
+
+        for ($i = 0; $i < $diff_count; $i++) {
+            if ($users1->count() > $users2->count()) {
+                $users1->pop();
+            } else {
+                $users2->pop();
+            }
+        }
+        $users = $users1->push($user)->merge($users2);
+        return $users;
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
+     */
+    private function getUserData()
+    {
         $user = \App\User::where('id', '=', Auth::user()->id)
             ->withCount('beers AS total_beers_count')
             ->withCount(['beers AS beers_count' => function ($query) {
@@ -44,41 +100,6 @@ class HomeController extends Controller
                 $query->select(DB::raw("sum(cost) as cost_sum"));
             }])
             ->first();
-
-        $user_count = $user->beers_count;
-
-        $users1 = \App\User::select('id', 'nickname')
-            ->where('id', '!=', $user->id)
-            ->withCount(['beers AS beers_count' => function ($query) {
-                $query->whereDate('created_at', '>', Carbon::now()->subDays(30))
-                    ->where('beer_type_id', '=', 1);
-            }])
-            ->having('beers_count', '>=', $user_count)->orderBy('beers_count', 'asc')->take(5)->get();
-        $users2 = \App\User::select('id', 'nickname')->withCount(['beers AS beers_count' => function ($query) {
-            $query->whereDate('created_at', '>', Carbon::now()->subDays(30))
-                ->where('beer_type_id', '=', 1);
-        }])
-            ->having('beers_count', '<', $user_count)->orderBy('beers_count', 'desc')->take(5)->get();
-
-        $show_count = 5;
-        $total_count = $users1->count() + $users2->count();
-        $diff_count = $total_count - $show_count;
-
-
-        for ($i = 0; $i < $diff_count; $i++) {
-            if ($users1->count() > $users2->count()) {
-                $users1->pop();
-            } else {
-                $users2->pop();
-            }
-        }
-
-
-        $data['beer_price'] = BeerType::find(1, ['price'])->price;
-        $data['users'] = $users1->push($user)->merge($users2);
-        $data['beers'] = Auth::user()->beers()->with('reporter', 'beerType')->take(10)->orderBy('created_at', 'desc')->get();
-        $data['user'] = $user;
-        $data['cashflows'] = Auth::user()->cashflows()->take(10)->orderBy('created_at', 'desc')->get();
-        return view('home', $data);
+        return $user;
     }
 }

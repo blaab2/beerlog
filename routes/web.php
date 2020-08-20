@@ -30,6 +30,7 @@ Route::group(['middleware' => ['verified']], function () {
     Route::resource('users.beers', 'BeerController')->shallow();
     Route::get('beers', 'BeerController@index')->name('beers.index');
 
+    Route::any('beers2', 'BeerController@index_ajax');
 
     Route::resource('users.cashflow', 'CashflowController')->shallow();
 

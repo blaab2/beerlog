@@ -40,6 +40,66 @@ class BeerController extends Controller
         }
     }
 
+
+    public function index_ajax(User $user, Request $request)
+    {
+        //dd($request);
+        $columns = array(
+            0 => 'id',
+            1 => 'cost',
+            2 => 'created_at'
+        );
+
+        $totalData = Beer::count();
+
+        $totalFiltered = $totalData;
+
+        $limit = $request->input('length');
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+
+        if (empty($request->input('search.value'))) {
+            $posts = Beer::select(['created_at', 'cost', 'id', 'beer_type_id'])->with('reporter', 'beerType:id,name')
+                ->offset($start)
+                ->limit($limit)
+                ->orderBy($order, $dir)
+                ->get();
+        } else {
+            $search = $request->input('search.value');
+
+            $posts = Beer::select(['created_at', 'cost', 'id', 'beer_type_id'])->with('reporter', 'beerType:id,name')
+                ->where('id', 'LIKE', "%{$search}%")
+                ->orWhere('created_at', 'LIKE', "%{$search}%")
+                ->offset($start)
+                ->limit($limit)
+                ->orderBy($order, $dir)
+                ->get();
+
+            $totalFiltered = Beer::select(['created_at', 'cost', 'id', 'beer_type_id'])->with('reporter', 'beerType:id,name')
+                ->where('id', 'LIKE', "%{$search}%")
+                ->orWhere('created_at', 'LIKE', "%{$search}%")
+                ->count();
+        }
+
+        $data = array();
+        if (!empty($posts)) {
+            foreach ($posts as $post) {
+                $data[] = $post;
+            }
+        }
+
+        $json_data = array(
+            "draw" => intval($request->input('draw')),
+            "recordsTotal" => intval($totalData),
+            "recordsFiltered" => intval($totalFiltered),
+            "data" => $data
+        );
+
+        echo json_encode($json_data);
+    }
+
+
     /**
      * Show the form for creating a new resource.
      *
