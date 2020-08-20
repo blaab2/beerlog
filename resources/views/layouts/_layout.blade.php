@@ -49,6 +49,10 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('beers.index') }}">{{ __('Drinks') }}</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://www.paypal.com/pools/c/8qDeh9YPym"
+                               target="_blank">{{__('pay your debts')}}</a>
+                        </li>
                         @can('manage drinks')
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('beertype.index') }}">{{ __('Beertype') }}</a>
