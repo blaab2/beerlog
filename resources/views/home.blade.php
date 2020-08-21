@@ -31,14 +31,19 @@
                                     Spezi please! <i class="fas fa-wine-bottle"></i></a>
                             </div>
                         </div>
-                        <div class="row justify-content-center">The price for one beer
-                            is {{number_format($beer_price,2)}}€ at the
-                            moment.
-                        </div>
-                        <hr/>
-                        <div class="row justify-content-center">
-
-                        </div>
+                            <div class="row justify-content-center">The price for one beer
+                                is {{number_format($beer_price,2)}}€ at the
+                                moment.
+                            </div>
+                            <hr/>
+                            <div class="row justify-content-center">
+                                @isset($toast)
+                                    <p class="text-center m-0">
+                                        <span class="text-muted">Eine Weisheiten für den Bier-treuen User:</span><br>
+                                        {{$toast->text}}
+                                    </p>
+                                @endisset
+                            </div>
                     </div>
                 </div>
             </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\BeerType;
+use App\Toast;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -39,6 +40,11 @@ class HomeController extends Controller
         $data['beers'] = Auth::user()->beers()->with('reporter', 'beerType')->take(10)->orderBy('created_at', 'desc')->get();
         $data['user'] = $user;
         $data['cashflows'] = Auth::user()->cashflows()->take(10)->orderBy('created_at', 'desc')->get();
+
+        if ($user->beers_count >= 3) {
+            $data['toast'] = Toast::inRandomOrder()->first();
+        }
+
         return view('home', $data);
     }
 
